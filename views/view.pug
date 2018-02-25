@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  p
+    a(href='/resumes/get/' + resume.id) S3
+  | filename: #{resume.filename}
+  br
+  | id: #{resume.id}
+  br
+  | author: #{resume.author}
+  br
+  | date: #{resume.date}

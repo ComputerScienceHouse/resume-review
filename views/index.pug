@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  ul
+    each resume in resumes
+        li
+          a(href='/resumes/view/' + resume.id) #{resume.filename}
+          |  by 
+          b #{resume.author}
