@@ -1,8 +1,8 @@
 extends layout
 
 block content
+  iframe(src=url, class="preview")
   p
-    a(href='/resumes/get/' + resume.id) S3
   | filename: #{resume.filename}
   br
   | id: #{resume.id}
