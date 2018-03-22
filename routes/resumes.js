@@ -14,12 +14,13 @@ function getUrl(id) {
   return s3.getSignedUrl('getObject', params);
 }
 
-router.get('/view/:id', function(req, res, next) {
+router.get('/view/:id',
+  (req, res, next) => {
     db.resumes.find(req.params.id)
     .then(data => {
-        res.render('view', { resume: data, url: getUrl(req.params.id) });
+        res.render('view', { resume: data, url: getUrl(req.params.id), user: req.user._json });
     })
     .catch(error => console.log(error));
-});
+  });
 
 module.exports = router;

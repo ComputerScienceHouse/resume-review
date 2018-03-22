@@ -6,7 +6,7 @@
 
 var app = require('../app');
 var config = require('../config');
-var debug = require('debug')('rides:server');
+var debug = require('debug')('resume-review:server');
 var http = require('http');
 
 /**
