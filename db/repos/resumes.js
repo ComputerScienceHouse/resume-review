@@ -28,11 +28,17 @@ class ResumesRepository {
     }
     
     all() {
-        return this.db.any('select * from resumes');
+        return this.db.any('select * from resumes order by date, filename');
     }
     
     find(id) {
         return this.db.oneOrNone(sql.find, {
+            id: id,
+        });
+    }
+
+    delete(id) {
+        return this.db.none(sql.delete, {
             id: id,
         });
     }

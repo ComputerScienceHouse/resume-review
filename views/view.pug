@@ -10,3 +10,6 @@ block content
   | author: #{resume.author}
   br
   | date: #{resume.date}
+  br
+  if isOwner
+    a(href="/resumes/delete/" + resume.id) Delete

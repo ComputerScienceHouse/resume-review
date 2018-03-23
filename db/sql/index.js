@@ -18,6 +18,7 @@ module.exports = {
         drop: sql('resumes/drop.sql'),
         add: sql('resumes/add.sql'),
         find: sql('resumes/find.sql'),
+        delete: sql('resumes/delete.sql'),
     },
     comments: {
         create: sql('comments/create.sql'),
