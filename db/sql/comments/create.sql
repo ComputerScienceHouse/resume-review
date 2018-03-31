@@ -1,7 +1,8 @@
 create table comments
 (
-    resume_id references resumes(id),
+    parent_id text,
+    id text,
     author text,
-    filename text,
+    body text,
     date timestamp without time zone
 )

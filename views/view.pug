@@ -1,15 +1,42 @@
 extends layout
 
+mixin deleteButton(comment)
+  if user.preferred_username === comment.author
+    a(data-parent=comment.id, onclick='deleteComment(event)', href='#') Delete
+
+mixin displayComment(comment, isResponse)
+  if isResponse
+    p.comment.response "#{comment.body}" -#{comment.author} 
+      +deleteButton(comment)
+  else
+    p.comment "#{comment.body}" -#{comment.author} 
+      +deleteButton(comment) 
+      a(data-parent=comment.id, onclick='reply(event)', href='#') Reply
+
 block content
   iframe(src=url, class="preview")
   p
-  | filename: #{resume.filename}
-  br
-  | id: #{resume.id}
-  br
-  | author: #{resume.author}
-  br
-  | date: #{resume.date}
-  br
-  if isOwner
-    a(href="/resumes/delete/" + resume.id) Delete
+    | filename: #{resume.filename}
+    br
+    | id: #{resume.id}
+    br
+    | author: #{resume.author}
+    br
+    | date: #{resume.date}
+    br
+    if isOwner
+      a(href="/resumes/delete/" + resume.id) Delete
+
+  each comment in comments
+    div
+      +displayComment(comment, false)
+      each child in comment.children
+        +displayComment(child, true)
+
+  form
+    input(name='parent_id', type='text', value=resume.id, readonly, hidden)
+    input(name='body', type='text', placeholder='New comment')
+    input(type='button', value='Post', onclick="sendComment(event)")
+
+block footer
+  script(src='/javascripts/view.js')

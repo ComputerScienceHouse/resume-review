@@ -26,5 +26,7 @@ module.exports = {
         drop: sql('comments/drop.sql'),
         add: sql('comments/add.sql'),
         find: sql('comments/find.sql'),
+        findByParent: sql('comments/findByParent.sql'),
+        delete: sql('comments/delete.sql'),
     }
 };

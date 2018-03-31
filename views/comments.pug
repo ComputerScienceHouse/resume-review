@@ -1,0 +1,5 @@
+each comment in comments
+    p.comment "#{comment.body}" -#{comment.author} 
+      a(data-parent=comment.id, onclick='reply(event)', href='#') Reply
+      each child in comment.children
+        p.comment.response "#{child.body}" -#{child.author}

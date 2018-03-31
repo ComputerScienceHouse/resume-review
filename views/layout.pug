@@ -8,6 +8,8 @@ html
     br
     a(href='/upload') Upload
     br
-    p Logged in as: #{user.preferred_username}
+    if user
+      p Logged in as: #{user.preferred_username}
     br
     block content
+    block footer

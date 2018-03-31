@@ -13,6 +13,7 @@ var config = require('./config');
 var index = require('./routes/index');
 var resumes = require('./routes/resumes');
 var upload = require('./routes/upload');
+var comment = require('./routes/comment');
 
 var app = express();
 
@@ -25,9 +26,8 @@ app.set('view engine', 'pug');
 app.use(logger('combined'));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({
-  extended: true,
-}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
   secret: config.auth.session_secret,
   saveUninitialized: true,
@@ -74,6 +74,7 @@ const requireAuth = (req, res, next) => {
 app.use('/', requireAuth, index);
 app.use('/resumes', requireAuth, resumes);
 app.use('/upload', requireAuth, upload);
+app.use('/comment', requireAuth, comment);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

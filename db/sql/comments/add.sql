@@ -1,3 +1,3 @@
 insert into comments
-values(${resume_id}, ${author}, ${body}, ${date})
+values(${parent_id}, ${id}, ${author}, ${body}, ${date})
 returning *
