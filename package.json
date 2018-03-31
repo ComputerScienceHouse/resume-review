@@ -19,7 +19,7 @@
     "passport": "^0.4.0",
     "passport-openidconnect": "0.0.2",
     "pg-promise": "^7.5.4",
-    "pug": "2.0.0-beta11",
+    "pug": "^2.0.0-beta11",
     "s3": "^4.4.0",
     "serve-favicon": "~2.4.5"
   },
