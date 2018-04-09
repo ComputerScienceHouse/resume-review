@@ -1,9 +1,18 @@
 extends layout
 
 block content
-  ul
-    each resume in resumes
-        li
-          a(href='/resumes/view/' + resume.id) #{resume.filename}
-          |  by 
-          b #{resume.author}
+  .container
+    .row
+      .col
+        ul.list-group
+          if !resumes.length
+            h2.text-center No resumes found. 
+              a(href="/upload/") Click here 
+              | to upload one!
+          each resume in resumes
+            li.list-group-item
+              a(href='/resumes/view/' + resume.id)
+                img(src='https://profiles.csh.rit.edu/image/' + resume.author, class='profile')
+                | #{resume.filename} by 
+                b #{resume.author}
+                span.badge.badge-primary.badge-pill Posted #{moment(resume.date + ' +0000').fromNow()}

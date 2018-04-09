@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const hasha = require('hasha');
+const moment = require('moment');
 const config = require('../config');
 const db = require('../db');
 const s3 = require('../s3');
@@ -50,7 +51,7 @@ router.get('/view/:id',
         const comments = results[0];
         const resume = results[1];
         const isOwner = req.user._json.preferred_username === resume.author;
-        res.render('view', { resume, url: getUrl(req.params.id), user: req.user._json, isOwner, comments: comments, });
+        res.render('view', { resume, url: getUrl(req.params.id), user: req.user._json, isOwner, comments: comments, moment });
       })
       .catch(error => console.log(error));
   });

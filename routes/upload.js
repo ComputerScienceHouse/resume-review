@@ -15,9 +15,19 @@ router.get('/',
 router.post('/',
   upload.single('resume'),
   (req, res) => {
+    // verify file is less than 5 MB
+    if ((req.file.size / 1000000) > 5) {
+      res.status(400).render('upload', { user: req.user._json, error: 'Maximum file size is 5 MB' });
+      return;
+    }
     // verify file is a PDF
     if (req.file.mimetype !== 'application/pdf') {
-      res.status(400).send('Upload a PDF');
+      res.status(400).render('upload', { user: req.user._json, error: 'File must be a PDF' });
+      return;
+    }
+    // verify user isn't very unoriginal
+    if (req.file.originalname.toLowerCase() === 'resume.pdf') {
+      res.status(400).render('upload', { user: req.user._json, error: 'Really? "resume.pdf"? C\'mon.' });
       return;
     }
     var id = hasha(req.file.buffer, {algorithm: 'md5'});

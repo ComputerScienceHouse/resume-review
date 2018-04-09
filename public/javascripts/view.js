@@ -5,8 +5,8 @@ const reply = event => {
   const formHTML = `
     <form class="response">
       <input name="parent_id" type="text" value="${event.target.dataset.parent}" readonly hidden>
-      <input name="body" type="text" placeholder="New comment">
-      <input type="button" value="Post" onclick="sendComment(event)">
+      <input name="body" type="text" placeholder="New reply">
+      <input type="button" value="Post" onclick="sendComment(event)" class="btn btn-primary">
     </form>`;
   event.target
     .parentElement // get <p> surrounding link clicked

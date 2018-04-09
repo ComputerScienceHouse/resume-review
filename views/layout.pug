@@ -1,15 +1,41 @@
 doctype html
 html
   head
-    title= title
+    title CSH Resume Review
+    link(rel="stylesheet", href="https://s3.csh.rit.edu/csh-material-bootstrap/4.0.0/dist/csh-material-bootstrap.min.css")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    a(href='/') Home
-    br
-    a(href='/upload') Upload
-    br
-    if user
-      p Logged in as: #{user.preferred_username}
-    br
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
+      .container
+        a.navbar-brand(href='/') Resume Review
+        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navigation', aria-controls='navigation', aria-expanded='false', aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        #navigation.collapse.navbar-collapse
+          ul.navbar-nav.mr-auto
+            li.nav-item
+              a.nav-link(href='/') Home
+            li.nav-item
+              a.nav-link(href='/upload') Upload
+          ul.nav.navbar-nav.ml-auto
+            li.nav-item.navbar-user.dropdown
+              a#user.nav-link.dropdown-toggle(data-toggle='dropdown', href='#')
+                img(src='https://profiles.csh.rit.edu/image/' + user.preferred_username)
+                | #{user.given_name + ' ' + user.family_name}
+                span.caret
+              .dropdown-menu(aria-labelledby='user')
+                a.dropdown-item(href='https://profiles.csh.rit.edu/profile/' + user.preferred_username) Profile
+                a.dropdown-item(href='https://github.com/ramzallan/resume-review/') Report an Issue
+    if error
+      .container
+        .row
+          .col-6
+            .alert.alert-dismissible.alert-danger
+              button(type="button", class="close", data-dismiss="alert") ×
+              strong Error: 
+              | #{error}
+
     block content
+    script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js')
     block footer
