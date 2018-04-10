@@ -6,7 +6,10 @@ block content
       .col
         h1 Upload a new resume
         form(method='post', enctype="multipart/form-data", class="upload form-group")
-          input(type='file', name='resume', aria-describedby='fileHelp')
+          input(type='file', name='resume', aria-describedby='fileHelp', id="file")
           small#fileHelp.form-text.text-muted
             | Accepts PDFs less than 5 MB
           input(type='submit', value='Upload', class="btn btn-primary")
+
+block footer
+  script(src='/javascripts/upload.js')
