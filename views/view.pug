@@ -1,7 +1,7 @@
 extends layout
 
 mixin deleteButton(comment)
-  if user.preferred_username === comment.author
+  if canEdit(user.preferred_username, comment.author)
     a(data-parent=comment.id, onclick='deleteComment(event)', href='#', class='btn btn-sm btn-danger') Delete
 
 mixin displayComment(comment, isResponse)
@@ -34,7 +34,7 @@ block content
           strong #{resume.author} 
           | posted this 
           | #{moment(resume.date + ' +0000').fromNow()}.
-        if isOwner
+        if canEdit(user.preferred_username, resume.author)
           a(href="/resumes/delete/" + resume.id, class='btn btn-danger deleteResume') Delete this file
         iframe(src=url, class="preview")
       .col-12

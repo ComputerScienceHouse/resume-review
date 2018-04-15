@@ -44,14 +44,17 @@ function buildCommentThreads(resume_id) {
     });
 }
 
+function canEdit(user, author) {
+  return user === author || config.admins.includes(user);
+}
+
 router.get('/view/:id',
   (req, res, next) => {
     Promise.all([buildCommentThreads(req.params.id), db.resumes.find(req.params.id)])
       .then(results => {
         const comments = results[0];
         const resume = results[1];
-        const isOwner = req.user._json.preferred_username === resume.author;
-        res.render('view', { resume, url: getUrl(req.params.id), user: req.user._json, isOwner, comments: comments, moment });
+        res.render('view', { resume, url: getUrl(req.params.id), user: req.user._json, canEdit, comments: comments, moment });
       })
       .catch(error => console.log(error));
   });
@@ -60,8 +63,7 @@ router.get('/delete/:id',
   (req, res, next) => {
     db.resumes.find(req.params.id)
     .then(data => {
-      const isOwner = req.user._json.preferred_username === data.author;
-      if (isOwner) {
+      if (canEdit(req.user._json.preferred_username, data.author)) {
         db.resumes.delete(req.params.id)
         .then(() => {
           const params = {

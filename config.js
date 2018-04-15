@@ -19,4 +19,6 @@ config.auth.client_secret = process.env.OIDC_CLIENT_SECRET;
 config.auth.callback_url = process.env.OIDC_CALLBACK_URL;
 config.auth.session_secret = process.env.OIDC_SESSION_SECRET;
 
+config.admins = process.env.ADMINS.split(' '); // get space delimited admin list
+
 module.exports = config;

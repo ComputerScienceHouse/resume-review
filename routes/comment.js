@@ -43,7 +43,7 @@ router.delete('/',
     }
     db.comments.find(id)
       .then(comment => {
-        if (user == comment.author) {
+        if (user === comment.author || config.admins.includes(user)) {
           db.comments.delete(id)
             .then(result => {
               console.log(result);

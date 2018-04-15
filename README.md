@@ -16,6 +16,7 @@ To develop locally, create `nodemon.json` with the following environment variabl
     "OIDC_CLIENT_SECRET": "",
     "OIDC_CALLBACK_URL": "",
     "OIDC_SESSION_SECRET": ""
+    "ADMINS": ""
   }
 }
 ```
