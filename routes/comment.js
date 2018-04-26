@@ -4,6 +4,15 @@ const hasha = require('hasha');
 const config = require('../config');
 const db = require('../db');
 
+function deleteChildComments(id) {
+  db.comments.findByParent(id)
+    .then(comments => {
+      for (let comment of comments) {
+        db.comments.delete(comment.id);
+      }
+    })
+}
+
 router.post('/',
   (req, res, next) => {
     const author = req.user._json.preferred_username;
@@ -44,6 +53,7 @@ router.delete('/',
     db.comments.find(id)
       .then(comment => {
         if (user === comment.author || config.admins.includes(user)) {
+          deleteChildComments(id);
           db.comments.delete(id)
             .then(result => {
               console.log(result);

@@ -48,6 +48,18 @@ function canEdit(user, author) {
   return user === author || config.admins.includes(user);
 }
 
+function deleteChildComments(id) {
+  buildCommentThreads(id)
+    .then(comments => {
+      for (let parent of comments) {
+        for (let child of parent.children) {
+          db.comments.delete(child.id);
+        }
+        db.comments.delete(parent.id);
+      }
+    })
+}
+
 router.get('/view/:id',
   (req, res, next) => {
     Promise.all([buildCommentThreads(req.params.id), db.resumes.find(req.params.id)])
@@ -64,6 +76,7 @@ router.get('/delete/:id',
     db.resumes.find(req.params.id)
     .then(data => {
       if (canEdit(req.user._json.preferred_username, data.author)) {
+        deleteChildComments(req.params.id);
         db.resumes.delete(req.params.id)
         .then(() => {
           const params = {
