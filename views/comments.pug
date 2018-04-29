@@ -1,5 +1,28 @@
+mixin deleteButton(comment)
+  if canEdit(user.preferred_username, comment.author)
+    a(data-parent=comment.id, onclick='deleteComment(event)', href='#', class='btn btn-sm btn-danger') Delete
+
+mixin displayComment(comment, isResponse)
+  if isResponse
+    li.list-group-item.comment.response
+      img(src='https://profiles.csh.rit.edu/image/' + comment.author, class='profile')
+      strong #{comment.author}
+      | : 
+      | #{comment.body}
+      span.badge.badge-primary.badge-pill #{moment(comment.date + ' +0000').fromNow()}
+      +deleteButton(comment)
+  else
+    li.list-group-item.comment
+      img(src='https://profiles.csh.rit.edu/image/' + comment.author, class='profile')
+      strong #{comment.author}
+      | : 
+      | #{comment.body}
+      span.badge.badge-primary.badge-pill #{moment(comment.date + ' +0000').fromNow()}
+      a(data-parent=comment.id, onclick='reply(event)', href='#', class='btn btn-sm btn-info') Reply
+      +deleteButton(comment)
+
 each comment in comments
-    p.comment "#{comment.body}" -#{comment.author} 
-      a(data-parent=comment.id, onclick='reply(event)', href='#') Reply
+  ul.list-group
+      +displayComment(comment, false)
       each child in comment.children
-        p.comment.response "#{child.body}" -#{child.author}
+          +displayComment(child, true)

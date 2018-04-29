@@ -1,28 +1,5 @@
 extends layout
 
-mixin deleteButton(comment)
-  if canEdit(user.preferred_username, comment.author)
-    a(data-parent=comment.id, onclick='deleteComment(event)', href='#', class='btn btn-sm btn-danger') Delete
-
-mixin displayComment(comment, isResponse)
-  if isResponse
-    li.list-group-item.comment.response
-      img(src='https://profiles.csh.rit.edu/image/' + comment.author, class='profile')
-      strong #{comment.author}
-      | : 
-      | #{comment.body}
-      span.badge.badge-primary.badge-pill #{moment(comment.date + ' +0000').fromNow()}
-      +deleteButton(comment)
-  else
-    li.list-group-item.comment
-      img(src='https://profiles.csh.rit.edu/image/' + comment.author, class='profile')
-      strong #{comment.author}
-      | : 
-      | #{comment.body}
-      span.badge.badge-primary.badge-pill #{moment(comment.date + ' +0000').fromNow()}
-      a(data-parent=comment.id, onclick='reply(event)', href='#', class='btn btn-sm btn-info') Reply
-      +deleteButton(comment)
-
 block content
   .container
     .row
@@ -38,11 +15,7 @@ block content
           a(href="/resumes/delete/" + resume.id, class='btn btn-danger deleteResume') Delete this file
         iframe(src=url, class="preview")
       .col-12
-        each comment in comments
-          ul.list-group
-            +displayComment(comment, false)
-            each child in comment.children
-              +displayComment(child, true)
+        include comments.pug
       .col-12
         form
           input(name='parent_id', type='text', value=resume.id, readonly, hidden)
