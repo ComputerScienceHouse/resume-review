@@ -12,9 +12,9 @@ html
           span.navbar-toggler-icon
         #navigation.collapse.navbar-collapse
           ul.navbar-nav.mr-auto
-            li.nav-item
+            li(class=homeActive ? "active nav-item" : "nav-item")
               a.nav-link(href='/') Home
-            li.nav-item
+            li(class=uploadActive ? "active nav-item" : "nav-item")
               a.nav-link(href='/upload') Upload
           ul.nav.navbar-nav.ml-auto
             li.nav-item.navbar-user.dropdown

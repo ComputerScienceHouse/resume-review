@@ -9,7 +9,7 @@ const upload = multer();
 
 router.get('/',
   (req, res) => {
-    res.render('upload', { user: req.user._json });
+    res.render('upload', { user: req.user._json, uploadActive: true });
   });
 
 router.post('/',
