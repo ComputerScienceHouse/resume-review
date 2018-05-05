@@ -37,6 +37,12 @@ class ResumesRepository {
         });
     }
 
+    findByAuthor(author) {
+        return this.db.any(sql.findByAuthor, {
+            author,
+        });
+    }
+
     delete(id) {
         return this.db.none(sql.delete, {
             id: id,

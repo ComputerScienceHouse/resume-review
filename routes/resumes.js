@@ -60,6 +60,17 @@ function deleteChildComments(id) {
     })
 }
 
+router.get('/view/mine',
+  (req, res, next) => {
+    db.resumes.findByAuthor(req.user._json.preferred_username)
+      .then(resumes => {
+        res.render('index', { resumes, user: req.user._json, moment, mineActive: true });
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  });
+
 router.get('/view/:id',
   (req, res, next) => {
     Promise.all([buildCommentThreads(req.params.id), db.resumes.find(req.params.id)])
