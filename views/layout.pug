@@ -25,7 +25,7 @@ html
                 | #{user.given_name + ' ' + user.family_name}
                 span.caret
               .dropdown-menu(aria-labelledby='user')
-                a.dropdown-item(href='https://profiles.csh.rit.edu/profile/' + user.preferred_username) Profile
+                a.dropdown-item(href='https://profiles.csh.rit.edu/user/' + user.preferred_username) Profile
                 a.dropdown-item(href='https://github.com/ramzallan/resume-review/') Report an Issue
     if error
       .container
