@@ -39,7 +39,7 @@ router.post('/',
         return;
       }
       // if not found, upload it
-      var filename = req.file.originalname;
+      var filename = req.body.title || req.file.originalname;
       var author = req.user._json.preferred_username;
       var date = new Date().toISOString().slice(0, 19).replace('T', ' '); // sql format
       // add to DB

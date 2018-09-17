@@ -15,5 +15,17 @@ document.getElementById('file').addEventListener("change", function(event) {
         .parentElement // get .row
         .insertAdjacentHTML('beforeBegin', html);
       event.target.parentElement.reset();
+    } else {
+      let titleInput = document.getElementById("title");
+      if (titleInput) {
+        titleInput.remove(); // replace existing title input
+      }
+      const html = `
+      <span id="title">
+        <label class="control-label" for="title">File title</label>
+        <input class="input-control" type="text" name="title" placeholder="File title" value="${this.files[0].name}" />
+      </span>`;
+      event.target
+        .insertAdjacentHTML('afterEnd', html);
     }
 });

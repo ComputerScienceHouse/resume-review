@@ -37,6 +37,21 @@ form {
   display: block;
 }
 
+.upload input {
+  display: block;
+}
+
+.upload label {
+  margin-top: 10px;
+}
+
+.upload input[type='text'] {
+  height: auto;
+  padding: 10px;
+  width: 300px;
+  background: transparent;
+}
+
 .btn.deleteResume {
   margin-bottom: 20px;
 }
