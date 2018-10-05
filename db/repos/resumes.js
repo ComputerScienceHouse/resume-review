@@ -28,7 +28,7 @@ class ResumesRepository {
     }
     
     all() {
-        return this.db.any('select * from resumes order by date, filename');
+        return this.db.any('select * from resumes order by date desc, filename desc');
     }
     
     find(id) {
