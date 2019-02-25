@@ -72,3 +72,14 @@ form {
 .list-group {
   margin-bottom: 20px;
 }
+
+input[name=body] {
+  height: auto;
+  padding: 8px;
+  margin-right: 10px;
+}
+
+#comment-input {
+  width: 80%;
+  height: auto;
+}

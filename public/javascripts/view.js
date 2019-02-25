@@ -5,7 +5,7 @@ const reply = event => {
   const formHTML = `
     <form class="response">
       <input name="parent_id" type="text" value="${event.target.dataset.parent}" readonly hidden>
-      <input name="body" type="text" placeholder="New reply">
+      <input id="comment-input" name="body" type="text" placeholder="New reply">
       <input type="button" value="Post" onclick="sendComment(event)" class="btn btn-primary">
     </form>`;
   event.target

@@ -19,7 +19,7 @@ block content
       .col-12
         form
           input(name='parent_id', type='text', value=resume.id, readonly, hidden)
-          input(name='body', type='text', placeholder='New comment')
+          input(id="comment-input" name='body', type='text', placeholder='New comment')
           input(type='button', value='Post', onclick="sendComment(event)", class='btn btn-primary')
 
 block footer
