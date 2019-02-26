@@ -1,8 +1,74 @@
 var express = require('express');
 var router = express.Router();
 const hasha = require('hasha');
+const nodemailer = require('nodemailer/lib/nodemailer');
+const escape = require('escape-html');
 const config = require('../config');
 const db = require('../db');
+
+
+function sendEmail(owner, author, parent_id, body) {
+  const transporter = nodemailer.createTransport(
+    {
+      host: config.email.host,
+      port: config.email.port,
+      auth: {
+        user: config.email.username,
+        pass: config.email.password,
+    },
+      logger: false,
+      debug: false, // don't log debug info
+    },
+    {
+      from: 'CSH Resume Review <resumes@csh.rit.edu>',
+    }
+  );
+
+  const message = {
+    to: owner + '<' + owner + '@csh.rit.edu>',
+    subject: author + ' commented on your resume!',
+    text: 'You have a new comment on your resume!\n' +
+    'They said: "' + body + '"\n' +
+    'Read it or reply here: https://resumes/view/' + parent_id + '.', // plaintext body
+
+    html: '<p>You have a new comment on your resume!</p>' +
+      '<p>They said: "' + body + '".</p>' +
+      '<a href="https://resumes.csh.rit.edu/resumes/view/' + parent_id + '">Click here to read it or respond!</a>' //html body
+  };
+
+  transporter.sendMail(message, (err, info) => {
+    if (err) {
+      console.log('Error sending mail to ' + owner + 'for comment by ' + author);
+      console.log(err.message);
+    } else {
+      console.log('Mail sent successfully to ' + owner + 'for comment by ' + author);
+    }
+  });
+}
+
+
+function notifyOwner(commenter, parent_id, body) {
+    const parent_resume = db.resumes.find(parent_id)
+      .then(data => {
+        if (data) { // top level comment, parent_id was a resume
+          if (data.author !== commenter) {
+            sendEmail(data.author, commenter, parent_id, body);
+          }
+        } else { // threaded comment, parent_id was a comment, find its resume
+          db.comments.find(parent_id).then(parent_comment => { // get parent comment
+            db.resumes.find(parent_comment.parent_id).then(parent_resume => { // get parent resume
+              if (parent_resume.author !== commenter) {
+                sendEmail(parent_resume.author, commenter, parent_resume.id, body);
+              }
+            });
+          });
+        }
+      })
+      .catch(err => {
+        console.log('Mail error:\n', err);
+      });
+}
+
 
 function deleteChildComments(id) {
   db.comments.findByParent(id)
@@ -33,6 +99,7 @@ router.post('/',
     .then(data => {
       res.status(200);
       res.send('success');
+      notifyOwner(author, req.body.parent_id, escape(req.body.body)); // send email on successful comment
     })
     .catch(error => {
       res.status(500);

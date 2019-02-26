@@ -34,7 +34,11 @@ Create `nodemon.json` with the following environment variables filled in:
     "OIDC_CLIENT_SECRET": "",
     "OIDC_CALLBACK_URL": "",
     "OIDC_SESSION_SECRET": "",
-    "ADMINS": ""
+    "ADMINS": "",
+    "SMTP_HOST": "",
+    "SMTP_PORT": ,
+    "SMTP_USERNAME": "",
+    "SMTP_PASSWORD": ""
   }
 }
 ```
