@@ -26,7 +26,7 @@ router.post('/',
       return;
     }
     // verify user isn't very unoriginal
-    if (req.file.originalname.toLowerCase() === 'resume.pdf') {
+    if ((req.body.title || req.file.originalname).toLowerCase() === 'resume.pdf') {
       res.status(400).render('upload', { user: req.user._json, error: 'Really? "resume.pdf"? C\'mon.' });
       return;
     }
