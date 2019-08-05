@@ -7,7 +7,7 @@ const config = require('../config');
 
 router.get('/',
   (req, res, next) => {
-    db.resumes.all()
+    db.resumes.newestByAuthor()
       .then(data => {
         res.render('index', { resumes: data, user: req.user._json, moment, homeActive: true });
       })

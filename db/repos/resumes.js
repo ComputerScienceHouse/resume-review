@@ -30,7 +30,11 @@ class ResumesRepository {
     all() {
         return this.db.any('select * from resumes order by date desc, filename desc');
     }
-    
+
+    newestByAuthor() {
+        return this.db.any(sql.newestByAuthor);
+    }
+
     find(id) {
         return this.db.oneOrNone(sql.find, {
             id: id,

@@ -13,15 +13,32 @@ a {
 .preview {
   width: 100%;
   height: 600px;
+  transition: height 0.5s, margin 0.5s;
   margin-bottom: 20px;
+  border: none;
+}
+
+.collapsed .preview {
+  height: 0;
+  margin: 0;
 }
 
 form {
   margin: 10px 0;
 }
 
+small {
+  display: inline-block;
+  width: 100%;
+  margin-top: 20px;
+}
+
 .badge {
-  float: right;
+  margin-top: 3px;
+}
+
+.badge-pill {
+  padding: 0.3em 0.6em;
 }
 
 .profile {
@@ -62,11 +79,7 @@ form {
 
 .btn-sm {
   padding: 2px 5px;
-  margin: 0 10px;
-}
-
-.comment .btn {
-  float: right;
+  margin: 0 8px;
 }
 
 .list-group {
@@ -79,7 +92,15 @@ input[name=body] {
   margin-right: 10px;
 }
 
-#comment-input {
-  width: 80%;
-  height: auto;
+.comment-input {
+  width: 100%;
+  height: auto !important; /* blame bootstrap for this */
+}
+
+.card {
+  margin: 20px 0;
+}
+
+.badges .badge {
+  margin-left: 5px;
 }

@@ -60,26 +60,24 @@ function deleteChildComments(id) {
     })
 }
 
-router.get('/view/mine',
+router.get('/view/user/:uid',
   (req, res, next) => {
-    db.resumes.findByAuthor(req.user._json.preferred_username)
-      .then(resumes => {
-        res.render('index', { resumes, user: req.user._json, moment, mineActive: true });
-      })
-      .catch(error => {
-        console.log(error);
-      })
-  });
-
-router.get('/view/:id',
-  (req, res, next) => {
-    Promise.all([buildCommentThreads(req.params.id), db.resumes.find(req.params.id)])
-      .then(results => {
-        const comments = results[0];
-        const resume = results[1];
-        res.render('view', { resume, url: getUrl(req.params.id), user: req.user._json, canEdit, comments: comments, moment });
-      })
-      .catch(error => console.log(error));
+    db.resumes.findByAuthor(req.params.uid).then(resumes => {
+      if (resumes) {
+        Promise.all(resumes.map(resume => buildCommentThreads(resume.id)))
+          .then(comments => {
+            const data = resumes
+              .map(
+                (resume, index) => Object.assign(resume, { url: getUrl(resume.id), comments: comments[index] })
+              )
+              .sort(
+                (a, b) => new Date(b.date) - new Date(a.date)
+              );
+            data[0].preview = true; // preview only the most recent resume by default
+            res.render('viewMany', { data, user: req.user._json, canEdit, moment });
+          })
+      }
+    });
   });
 
 router.get('/delete/:id',

@@ -5,6 +5,7 @@ const db = require('../db');
 const s3 = require('../s3');
 const hasha = require('hasha');
 const multer = require('multer');
+const parsePdf = require('pdf-parse');
 const upload = multer();
 
 router.get('/',
@@ -30,12 +31,13 @@ router.post('/',
       res.status(400).render('upload', { user: req.user._json, error: 'Really? "resume.pdf"? C\'mon.' });
       return;
     }
+    parsePdf(req.file.buffer).then(data => console.log(data.text));
     var id = hasha(req.file.buffer, {algorithm: 'md5'});
     // check if resume is already uploaded
     db.resumes.find(id)
     .then((data) => {
       if (data) {
-        res.status(400).send('File already uploaded. <a href="/resumes/view/' + id + '">View it here</a>');
+        res.status(400).send('File already uploaded.');
         return;
       }
       // if not found, upload it
@@ -61,7 +63,7 @@ router.post('/',
             res.send('Could not upload file');
             console.log('Could not upload file');
           } else {
-            res.redirect('/resumes/view/' + id);
+            res.redirect('/resumes/view/user/' + author);
           }
         })
       }).catch(() => {

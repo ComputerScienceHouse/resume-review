@@ -1,0 +1,45 @@
+extends layout
+
+block head
+  script(src='https://kit.fontawesome.com/8da32cc80b.js')
+
+block content
+  include comments.pug
+  .container
+    .row
+      .col-12
+          each item in data
+            div.card
+              div.card-body
+                p
+                  img(src='https://profiles.csh.rit.edu/image/' + item.author, class='profile')
+                  strong #{item.author} 
+                  span.badge.badge-primary.badge-pill.float-right #{moment(item.date + ' +0000').fromNow()} 
+                  if !item.preview
+                    a(href='#', onClick='previewResume(event)', data-id=item.id, class='btn btn-sm btn-secondary') Toggle outdated
+                  if canEdit(user.preferred_username, item.author)
+                    a(data-parent=item.id, href="/resumes/delete/" + item.id, class='btn btn-sm btn-danger float-right')
+                      i(class='fas fa-trash-alt')
+                div(id=item.id, class=item.preview ? '' : 'collapsed')
+                  iframe(src=item.url, class='preview')
+                  each comment in item.comments
+                    ul.list-group
+                      +displayComment(comment, false)
+                      each child in comment.children
+                        +displayComment(child, true)
+                if item.preview
+                  form
+                    input(name='parent_id', type='text', value=item.id, readonly, hidden)
+                    .form-row
+                      .col-9.col-md-10
+                        input(class="comment-input" name='body', type='text', placeholder='New comment')
+                      .col-3.col-md-2
+                        input(type='button', value='Post', onclick="sendComment(event)", class='btn btn-primary')
+            if item.preview && data.length > 1
+              small
+                | Outdated
+                hr
+
+block footer
+  script(src='/javascripts/view.js')
+

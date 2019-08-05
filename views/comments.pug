@@ -1,6 +1,7 @@
 mixin deleteButton(comment)
   if canEdit(user.preferred_username, comment.author)
-    a(data-parent=comment.id, onclick='deleteComment(event)', href='#', class='btn btn-sm btn-danger') Delete
+    a(data-parent=comment.id, onclick='deleteComment(event)', href='#', class='btn btn-sm btn-danger float-md-right')
+      i(class='fas fa-trash-alt')
 
 mixin displayComment(comment, isResponse)
   if isResponse
@@ -9,20 +10,24 @@ mixin displayComment(comment, isResponse)
       strong #{comment.author}
       | : 
       | #{comment.body}
-      span.badge.badge-primary.badge-pill #{moment(comment.date + ' +0000').fromNow()}
-      +deleteButton(comment)
+      div.d-md-inline
+        span.badge.badge-secondary.badge-pill.float-md-right #{moment(comment.date + ' +0000').fromNow()}
+        +deleteButton(comment)
   else
     li.list-group-item.comment
       img(src='https://profiles.csh.rit.edu/image/' + comment.author, class='profile')
       strong #{comment.author}
       | : 
       | #{comment.body}
-      span.badge.badge-primary.badge-pill #{moment(comment.date + ' +0000').fromNow()}
-      a(data-parent=comment.id, onclick='reply(event)', href='#', class='btn btn-sm btn-info') Reply
-      +deleteButton(comment)
+      div.d-md-inline
+        span.badge.badge-secondary.badge-pill.float-md-right #{moment(comment.date + ' +0000').fromNow()}
+        a(data-parent=comment.id, onclick='reply(event)', href='#', class='btn btn-sm btn-info float-md-right')
+          i(class='fas fa-reply')
+        +deleteButton(comment)
 
-each comment in comments
-  ul.list-group
-      +displayComment(comment, false)
-      each child in comment.children
-          +displayComment(child, true)
+if comments
+    each comment in comments
+      ul.list-group
+          +displayComment(comment, false)
+          each child in comment.children
+              +displayComment(child, true)

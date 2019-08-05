@@ -2,21 +2,25 @@ const replyBtns = document.getElementsByClassName('reply');
 
 const reply = event => {
   event.preventDefault();
+  let button = event.target;
+  if (button.classList.contains('fas')) {
+    button = button.parentElement; // click event targetted icon
+  }
   const formHTML = `
-    <form class="response">
-      <input name="parent_id" type="text" value="${event.target.dataset.parent}" readonly hidden>
-      <input id="comment-input" name="body" type="text" placeholder="New reply">
+    <form class="response form-inline">
+      <input name="parent_id" type="text" value="${button.dataset.parent}" readonly hidden>
+      <input class="comment-input" name="body" type="text" placeholder="New reply">
       <input type="button" value="Post" onclick="sendComment(event)" class="btn btn-primary">
     </form>`;
-  event.target
-    .parentElement // get <p> surrounding link clicked
-    .parentElement // get <div> surrounding thread
+  button
+    .parentElement // get <li> surrounding comment
+    .parentElement // get <ul> surrounding thread
     .insertAdjacentHTML('beforeEnd', formHTML);
-  event.target.style.display = 'none'; // hide link once form is visible
+ button.style.display = 'none'; // hide link once form is visible
 };
 
 const sendComment = event => {
-  const form = event.target.parentElement;
+  const form = event.target.form;
   const parent_id = form.querySelector('[name=parent_id]').value;
   const body = form.querySelector('[name=body]').value;
   if (!parent_id || !body) {
@@ -51,7 +55,11 @@ const sendComment = event => {
 
 const deleteComment = event => {
   event.preventDefault();
-  const id = event.target.dataset.parent;
+  let button = event.target;
+  if (button.tagName.toLowerCase() === 'i') {
+    button = event.target.parentElement;
+  }
+  const id = button.dataset.parent;
   const request = new Request('/comment/');
   const options = {
     method: 'DELETE',
@@ -75,4 +83,10 @@ const deleteComment = event => {
       console.log(error);
     }
   );
+};
+
+const previewResume = event => {
+  event.preventDefault();
+  const id = event.target.dataset.id;
+  document.getElementById(id).classList.toggle('collapsed');
 };

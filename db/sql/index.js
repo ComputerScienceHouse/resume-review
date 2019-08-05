@@ -20,6 +20,7 @@ module.exports = {
         find: sql('resumes/find.sql'),
         findByAuthor: sql('resumes/findByAuthor.sql'),
         delete: sql('resumes/delete.sql'),
+        newestByAuthor: sql('resumes/newestByAuthor.sql'),
     },
     comments: {
         create: sql('comments/create.sql'),
