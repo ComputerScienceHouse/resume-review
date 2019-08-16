@@ -7,12 +7,19 @@ const reply = event => {
     button = button.parentElement; // click event targetted icon
   }
   const formHTML = `
-    <form class="response form-inline">
+    <form class="response">
       <input name="parent_id" type="text" value="${button.dataset.parent}" readonly hidden>
-      <input class="comment-input" name="body" type="text" placeholder="New reply">
-      <input type="button" value="Post" onclick="sendComment(event)" class="btn btn-primary">
+      <div class="form-row">
+        <div class="col-9 col-md-10">
+          <input class="comment-input" name="body" type="text" placeholder="New reply">
+        </div>
+        <div class="col-3 col-md-2">
+          <input type="button" value="Post" onclick="sendComment(event)" class="btn btn-primary">
+        </div>
+      </div>
     </form>`;
   button
+    .parentElement // get <div> surrounding link
     .parentElement // get <li> surrounding comment
     .parentElement // get <ul> surrounding thread
     .insertAdjacentHTML('beforeEnd', formHTML);
