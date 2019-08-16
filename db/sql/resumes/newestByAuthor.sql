@@ -3,7 +3,7 @@ select resumes.filename, resumes.date, resumes.author, comment_count, resume_cou
     inner join 
     (select resumes.author, count(comments.*) as comment_count
         from resumes
-        inner join
+        full join
         comments
             on resumes.id = comments.parent_id
         group by resumes.author

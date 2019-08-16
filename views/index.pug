@@ -18,9 +18,10 @@ block content
                 b #{resume.author}
                 span.badges
                   span.badge.badge-primary.badge-pill.float-right #{moment(resume.date + ' +0000').fromNow()}
-                  span.badge.badge-info.badge-pill.float-right
-                    | #{resume.comment_count} 
-                    i(class='fas fa-comments')
+                  if resume.comment_count > 0
+                    span.badge.badge-info.badge-pill.float-right
+                      | #{resume.comment_count} 
+                      i(class='fas fa-comments')
                   if resume.resume_count > 1
                     span.badge.badge-dark.badge-pill.float-right
                       | #{resume.resume_count} 
