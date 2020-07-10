@@ -18,4 +18,4 @@ COPY . /opt/resume-review
 
 USER 1001
 
-CMD ["node", "bin/www"]
+CMD ["node", "app.js"]
