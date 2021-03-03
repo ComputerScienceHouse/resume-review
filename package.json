@@ -27,7 +27,7 @@
     "passport-openidconnect": "0.0.2",
     "pdf-parse": "^1.1.1",
     "pg-promise": "^7.5.4",
-    "pug": "^2.0.0-beta11",
+    "pug": "^3.0.1",
     "s3": "^4.4.0",
     "serve-favicon": "~2.4.5"
   },
