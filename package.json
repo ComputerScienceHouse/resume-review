@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@hapi/cryptiles": "^4.2.0",
-    "aws-sdk": "^2.325.0",
+    "aws-sdk": "^2.814.0",
     "bluebird": "^3.5.2",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
