@@ -38,7 +38,8 @@ Create `nodemon.json` with the following environment variables filled in:
     "SMTP_HOST": "",
     "SMTP_PORT": ,
     "SMTP_USERNAME": "",
-    "SMTP_PASSWORD": ""
+    "SMTP_PASSWORD": "",
+    "SLACK_WEBHOOK_URL": ""
   }
 }
 ```
