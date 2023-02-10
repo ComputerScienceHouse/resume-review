@@ -7,6 +7,7 @@ const hasha = require('hasha');
 const multer = require('multer');
 const parsePdf = require('pdf-parse');
 const upload = multer();
+const sendSlackMessage = require('../slackbot');
 
 router.get('/',
   (req, res) => {
@@ -42,13 +43,14 @@ router.post('/',
       }
       // if not found, upload it
       var filename = req.body.title || req.file.originalname;
-      var author = req.user._json.preferred_username;
+      var authorUsername = req.user._json.preferred_username;
+      var authorFullname = req.user._json.name;
       var date = new Date().toISOString().slice(0, 19).replace('T', ' '); // sql format
       // add to DB
       db.resumes.add({
         id: id,
         filename: filename,
-        author: author,
+        author: authorUsername,
         date: date,
       }).then(() => {
         // add to S3
@@ -63,7 +65,8 @@ router.post('/',
             res.send('Could not upload file');
             console.log('Could not upload file');
           } else {
-            res.redirect('/resumes/view/user/' + author);
+            sendSlackMessage(authorFullname, authorUsername);
+            res.redirect('/resumes/view/user/' + authorUsername);
           }
         })
       }).catch(() => {
