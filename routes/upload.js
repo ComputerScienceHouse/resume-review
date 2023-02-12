@@ -1,13 +1,17 @@
-var express = require('express');
-var router = express.Router();
-const config = require('../config');
-const db = require('../db');
-const s3 = require('../s3');
-const hasha = require('hasha');
-const multer = require('multer');
-const parsePdf = require('pdf-parse');
+import express from 'express';
+import hasha from 'hasha';
+import multer from 'multer';
+// Importing `pdf-parse/lib/pdf-parse.js` gets around needing to have `/test/data/05-versions-space.pdf`
+// in root project directory
+// https://gitlab.com/autokent/pdf-parse/-/issues/30
+import parsePdf from 'pdf-parse/lib/pdf-parse.js';
+
+import config from '../config.js';
+import db from '../db/index.js';
+import s3 from '../s3.js';
+
+const router = express.Router();
 const upload = multer();
-const sendSlackMessage = require('../slackbot');
 
 router.get('/',
   (req, res) => {
@@ -76,4 +80,4 @@ router.post('/',
     });
   });
 
-module.exports = router;
+export default router;

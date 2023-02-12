@@ -1,7 +1,7 @@
-const fetch = require('node-fetch');
-const config = require('./config');
-const schedule = require('node-schedule');
-const db = require('./db');
+import fetch from 'node-fetch';
+import config from './config.js';
+import schedule from 'node-schedule';
+import db from './db/index.js';
 
 /**
 *    *    *    *    *    *
@@ -52,4 +52,4 @@ async function sendSlackMessage(authors) {
 	} catch (error) { }
 }
 
-module.exports = sendSlackMessage
+export default sendSlackMessage

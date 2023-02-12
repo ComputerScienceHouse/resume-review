@@ -1,21 +1,25 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var passport = require('passport');
-var session = require('express-session');
-var OIDCStrategy = require('passport-openidconnect').Strategy;
+import express from 'express';
+import path from 'path';
+import logger from 'morgan';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import passport from 'passport';
+import session from 'express-session';
+import { fileURLToPath } from 'url';
+import { Strategy as OIDCStrategy } from 'passport-openidconnect';
 
-var config = require('./config');
+import config from './config.js';
+import index from './routes/index.js';
+import resumes from './routes/resumes.js';
+import upload from './routes/upload.js';
+import comment from './routes/comment.js';
 
-var index = require('./routes/index');
-var resumes = require('./routes/resumes');
-var upload = require('./routes/upload');
-var comment = require('./routes/comment');
+// https://flaviocopes.com/fix-dirname-not-defined-es-module-scope/
+// __dirname isn't defined in ES Modules and this code was initially written before ES Modules were a thing
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -96,4 +100,4 @@ app.use(function(err, req, res, next) {
 
 app.listen(config.port);
 
-module.exports = app;
+export default app;

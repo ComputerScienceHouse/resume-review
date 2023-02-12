@@ -1,10 +1,12 @@
-var express = require('express');
-var router = express.Router();
-const hasha = require('hasha');
-const moment = require('moment');
-const config = require('../config');
-const db = require('../db');
-const s3 = require('../s3');
+import express from 'express';
+import hasha from 'hasha';
+import moment from 'moment';
+
+import config from '../config.js';
+import db from '../db/index.js';
+import s3 from '../s3.js';
+
+const router = express.Router();
 
 function getUrl(id) {
   var params = {
@@ -12,7 +14,7 @@ function getUrl(id) {
     Key: id,
     Expires: 60,
     ResponseContentType: 'application/pdf',
-  };
+ };
   return s3.getSignedUrl('getObject', params);
 }
 
@@ -112,4 +114,4 @@ router.get('/delete/:id',
     .catch(error => console.log(error));
   });
 
-module.exports = router;
+export default router;

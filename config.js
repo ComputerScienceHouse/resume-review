@@ -29,4 +29,4 @@ config.email.password = process.env.SMTP_PASSWORD;
 
 config.slackWebhookURL = process.env.SLACK_WEBHOOK_URL;
 
-module.exports = config;
+export default config
