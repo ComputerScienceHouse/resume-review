@@ -44,7 +44,6 @@ router.post('/',
       // if not found, upload it
       var filename = req.body.title || req.file.originalname;
       var authorUsername = req.user._json.preferred_username;
-      var authorFullname = req.user._json.name;
       var date = new Date().toISOString().slice(0, 19).replace('T', ' '); // sql format
       // add to DB
       db.resumes.add({
