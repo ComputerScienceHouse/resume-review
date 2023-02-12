@@ -65,7 +65,6 @@ router.post('/',
             res.send('Could not upload file');
             console.log('Could not upload file');
           } else {
-            sendSlackMessage(authorFullname, authorUsername);
             res.redirect('/resumes/view/user/' + authorUsername);
           }
         })
