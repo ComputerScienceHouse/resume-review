@@ -1,4 +1,4 @@
-FROM node:12-buster-slim
+FROM node:19-buster-slim
 LABEL maintainer="Ram Zallan <ramzallan@gmail.com>"
 
 EXPOSE 8080
