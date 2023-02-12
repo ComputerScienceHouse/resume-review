@@ -38,8 +38,15 @@ Create `nodemon.json` with the following environment variables filled in:
     "SMTP_HOST": "",
     "SMTP_PORT": ,
     "SMTP_USERNAME": "",
-    "SMTP_PASSWORD": ""
+    "SMTP_PASSWORD": "",
+    "SLACK_WEBHOOK_URL": ""
   }
 }
 ```
+
+Note: For local development, be sure to set OIDC_CALLBACK_URL to exactly `http://localhost:8080/auth/callback` or `http://localhost:4200/auth/callback`.
+
+If you are deadset on using something else, you will need to reach out to a Computer Science House Root Type Person first.
+
+
 and run `npm install`, then `nodemon resume-review`.

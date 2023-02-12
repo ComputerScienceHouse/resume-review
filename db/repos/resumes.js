@@ -9,15 +9,15 @@ class ResumesRepository {
     create() {
         return this.db.none(sql.create);
     }
-    
+
     drop() {
         return this.db.none(sql.drop);
     }
-    
+
     empty() {
         return this.db.none(sql.empty);
     }
-    
+
     add(values) {
         return this.db.one(sql.add, {
            id: values.id,
@@ -26,7 +26,7 @@ class ResumesRepository {
            date: values.date,
         });
     }
-    
+
     all() {
         return this.db.any('select * from resumes order by date desc, filename desc');
     }
@@ -52,6 +52,14 @@ class ResumesRepository {
             id: id,
         });
     }
+
+    /**
+    Fetches a list of users that posted a resume in the last 24 hours
+    */
+    fetchRecentUploders() {
+        return this.db.any(sql.dailyDigest);
+    }
+
 }
 
 module.exports = ResumesRepository;

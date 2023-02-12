@@ -27,4 +27,6 @@ config.email.port = process.env.SMTP_PORT;
 config.email.username = process.env.SMTP_USERNAME;
 config.email.password = process.env.SMTP_PASSWORD;
 
+config.slackWebhookURL = process.env.SLACK_WEBHOOK_URL;
+
 module.exports = config;
