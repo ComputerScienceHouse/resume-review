@@ -1,18 +1,45 @@
 const fetch = require('node-fetch');
 const config = require('./config');
+const schedule = require('node-schedule');
+const db = require('./db');
 
-async function sendSlackMessage(fullName, userName) {
+/**
+*    *    *    *    *    *
+┬    ┬    ┬    ┬    ┬    ┬
+│    │    │    │    │    │
+│    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
+│    │    │    │    └───── month (1 - 12)
+│    │    │    └────────── day of month (1 - 31)
+│    │    └─────────────── hour (0 - 23)
+│    └──────────────────── minute (0 - 59)
+└───────────────────────── second (0 - 59, OPTIONAL)
+*/
+// Runs every day at 13:00
+const job = schedule.scheduleJob('0 0 13 * * *', async function() {
+	const authors = await db.resumes.fetchRecentUploders()
+	await sendSlackMessage(authors);
+})
 
-	if (!config.slackWebhookURL) {
-		return
-	}
+async function sendSlackMessage(authors) {
+
+	if (authors.length == 0) { return }
+
+	if (!config.slackWebhookURL) { return }
 
 	const webhookURL = config.slackWebhookURL
 
-	let message = `${fullName} Uploaded a new <https://resumes.csh.rit.edu/resumes/view/user/${userName})!|Resume!>`;
+	// Slack markdown formatting info can be found here: https://api.slack.com/reference/surfaces/formatting#block-formatting
+	let messageString = "The following CSHers have uploaded resumes in the past 24 Hours:\n";
+
+	authors.forEach((author) => {
+		// Believe it or not, this is Slack's recommendation for creating lists (see lists section of the above list)
+		messageString += `• <https://resumes.csh.rit.edu/resumes/view/user/${author.author}|${author.author}>\n`
+	})
+
+	messageString += "\nYou should check them out!"
 
 	const body = {
-		text: message,
+		text: messageString,
 		mrkdwn: true
 	}
 
@@ -22,9 +49,7 @@ async function sendSlackMessage(fullName, userName) {
 			body: JSON.stringify(body),
 			headers: {'Content-Type': 'application/json'}
 		});
-	} catch (error) {
-		console.log(error);
-	}
+	} catch (error) { }
 }
 
 module.exports = sendSlackMessage

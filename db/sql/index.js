@@ -21,6 +21,7 @@ module.exports = {
         findByAuthor: sql('resumes/findByAuthor.sql'),
         delete: sql('resumes/delete.sql'),
         newestByAuthor: sql('resumes/newestByAuthor.sql'),
+        dailyDigest: sql('resumes/dailyDigest.sql')
     },
     comments: {
         create: sql('comments/create.sql'),

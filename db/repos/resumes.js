@@ -52,6 +52,14 @@ class ResumesRepository {
             id: id,
         });
     }
+
+    /**
+    Fetches a list of users that posted a resume in the last 24 hours
+    */
+    fetchRecentUploders() {
+        return this.db.any(sql.dailyDigest);
+    }
+
 }
 
 module.exports = ResumesRepository;
