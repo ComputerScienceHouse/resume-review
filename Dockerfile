@@ -12,6 +12,8 @@ RUN npm install
 
 COPY . /opt/resume-review
 
+ENV TZ="America/New_York"
+
 USER 1001
 
 CMD ["node", "app.js"]
