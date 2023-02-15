@@ -7,7 +7,6 @@ const hasha = require('hasha');
 const multer = require('multer');
 const parsePdf = require('pdf-parse');
 const upload = multer();
-const sendSlackMessage = require('../slackbot');
 
 router.get('/',
   (req, res) => {
