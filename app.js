@@ -14,6 +14,8 @@ var index = require('./routes/index');
 var resumes = require('./routes/resumes');
 var upload = require('./routes/upload');
 var comment = require('./routes/comment');
+// importing this module will schedule the job that communicates with ResumeBot
+var sendSlackMessage = require('./slackbot');
 
 var app = express();
 

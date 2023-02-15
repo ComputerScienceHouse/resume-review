@@ -52,4 +52,4 @@ async function sendSlackMessage(authors) {
 	} catch (error) { }
 }
 
-module.exports = sendSlackMessage
+module.export = job
