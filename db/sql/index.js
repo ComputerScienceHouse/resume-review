@@ -1,5 +1,13 @@
-const QueryFile = require('pg-promise').QueryFile;
-const path = require('path');
+import pgPromise from 'pg-promise';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// https://flaviocopes.com/fix-dirname-not-defined-es-module-scope/
+// __dirname isn't defined in ES Modules and this code was initially written before ES Modules were a thing
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const QueryFile = pgPromise.QueryFile;
 
 function sql(file) {
     const fullPath = path.join(__dirname, file);
@@ -11,7 +19,7 @@ function sql(file) {
     return qf;
 }
 
-module.exports = {
+export default {
     resumes: {
         create: sql('resumes/create.sql'),
         empty: sql('resumes/empty.sql'),

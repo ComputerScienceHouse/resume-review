@@ -1,4 +1,6 @@
-const sql = require('../sql').resumes;
+import _sql from '../sql/index.js';
+
+const sql = _sql.resumes;
 
 class ResumesRepository {
     constructor(db, pgp) {
@@ -62,4 +64,4 @@ class ResumesRepository {
 
 }
 
-module.exports = ResumesRepository;
+export default ResumesRepository;

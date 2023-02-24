@@ -2,6 +2,7 @@
   "name": "resume-review",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "node app.js",
     "nodemon": "nodemon resume-review"
@@ -24,7 +25,7 @@
     "multer": "^1.4.0",
     "node-fetch": "^2.6.9",
     "node-schedule": "^2.1.1",
-    "nodemailer": "^5.1.1",
+    "nodemailer": "^6.9.1",
     "passport": "^0.4.1",
     "passport-openidconnect": "0.0.2",
     "pdf-parse": "^1.1.1",

@@ -1,5 +1,5 @@
-const AWS = require('aws-sdk');
-const config = require('./config');
+import AWS from 'aws-sdk';
+import config from './config.js';
 
 const s3 = new AWS.S3({
     endpoint: config.s3.url,
@@ -9,4 +9,4 @@ const s3 = new AWS.S3({
     region: 'us-east-1'
 });
 
-module.exports = s3;
+export default s3;

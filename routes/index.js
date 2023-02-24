@@ -1,9 +1,9 @@
-const express = require('express');
-const moment = require('moment');
+import express from 'express';
+import moment from 'moment';
+
+import db from '../db/index.js';
+
 const router = express.Router();
-const db = require('../db');
-const s3 = require('../s3');
-const config = require('../config');
 
 router.get('/',
   (req, res, next) => {
@@ -14,4 +14,4 @@ router.get('/',
       .catch(error => console.log(error));
   });
 
-module.exports = router;
+export default router;

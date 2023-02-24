@@ -1,7 +1,7 @@
-const fetch = require('node-fetch');
-const config = require('./config');
-const schedule = require('node-schedule');
-const db = require('./db');
+import fetch from 'node-fetch';
+import db from './db/index.js';
+import schedule from 'node-schedule';
+import config from './config.js';
 
 /**
 *    *    *    *    *    *
@@ -14,6 +14,7 @@ const db = require('./db');
 │    └──────────────────── minute (0 - 59)
 └───────────────────────── second (0 - 59, OPTIONAL)
 */
+
 // Runs every day at 13:00
 const job = schedule.scheduleJob('0 0 13 * * *', async function() {
 	const authors = await db.resumes.fetchRecentUploders()
@@ -52,4 +53,4 @@ async function sendSlackMessage(authors) {
 	} catch (error) { }
 }
 
-module.export = job
+export default job;

@@ -1,4 +1,6 @@
-const sql = require('../sql').comments;
+import _sql from '../sql/index.js';
+
+const sql = _sql.comments;
 
 class CommentsRepository {
     constructor(db, pgp) {
@@ -47,4 +49,4 @@ class CommentsRepository {
     }
 }
 
-module.exports = CommentsRepository;
+export default CommentsRepository;

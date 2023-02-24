@@ -1,11 +1,12 @@
-var express = require('express');
-var router = express.Router();
-const hasha = require('hasha');
-const nodemailer = require('nodemailer/lib/nodemailer');
-const escape = require('escape-html');
-const config = require('../config');
-const db = require('../db');
+import express from 'express';
+import hasha from 'hasha';
+import nodemailer from 'nodemailer';
+import escape from 'escape-html';
 
+import config from '../config.js';
+import db from '../db/index.js';
+
+const router = express.Router();
 
 function sendEmail(owner, author, parent_id, body) {
   const transporter = nodemailer.createTransport(
@@ -147,4 +148,4 @@ router.delete('/',
   }
 );
 
-module.exports = router;
+export default router;

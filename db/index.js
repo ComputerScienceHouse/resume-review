@@ -1,9 +1,13 @@
-const config = require('../config');
-const promise = require('bluebird');
+import promise from 'bluebird';
+import pgPromise from 'pg-promise';
+
+import resumes from './repos/resumes.js';
+import comments from './repos/comments.js';
+import config from '../config.js';
 
 const repos = {
-    resumes: require('./repos/resumes'),
-    comments: require('./repos/comments'),
+    resumes: resumes,
+    comments: comments
 };
 
 const options = {
@@ -22,8 +26,8 @@ const props = {
     ssl: true,
 };
 
-const pgp = require('pg-promise')(options);
+const pgp = pgPromise(options);
 
 const db = pgp(props);
 
-module.exports = db;
+export default db;
