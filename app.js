@@ -13,6 +13,8 @@ import index from './routes/index.js';
 import resumes from './routes/resumes.js';
 import upload from './routes/upload.js';
 import comment from './routes/comment.js';
+// importing this module will schedule the job that communicates with ResumeBot
+import resumeBot from './slackbot.js';
 
 // https://flaviocopes.com/fix-dirname-not-defined-es-module-scope/
 // __dirname isn't defined in ES Modules and this code was initially written before ES Modules were a thing
