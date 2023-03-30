@@ -48,12 +48,12 @@ router.post('/',
         }
         // if not found, upload it
         var filename = req.body.title || req.file.originalname;
-        var authorUid = req.user._json.preferred_username;
+        var authorUsername = req.user._json.preferred_username;
         var date = new Date().toISOString().slice(0, 19).replace('T', ' '); // sql format
         // add to DB
         db.resumes.add({
           id: id,
-          uid: authorUid,
+          uid: authorUsername,
           filename: filename,
           date: date,
         }).then(() => {
@@ -69,7 +69,7 @@ router.post('/',
               res.send(`Could not upload file: ${error}`);
               console.log('Could not upload file');
             } else {
-              res.redirect('/resumes/view/user/' + authorUid);
+              res.redirect('/resumes/view/user/' + authorUsername);
             }
           })
         }).catch((error) => {
