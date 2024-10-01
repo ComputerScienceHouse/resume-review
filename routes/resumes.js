@@ -78,6 +78,9 @@ router.get('/view/user/:uid',
             data[0].preview = true; // preview only the most recent resume by default
             res.render('viewMany', { data, user: req.user._json, canEdit, moment });
           })
+      }else{ // causes a 404 when unable to find the user
+        res.status(404); 
+        res.send("Cannot find resumes for user ");
       }
     });
   });
