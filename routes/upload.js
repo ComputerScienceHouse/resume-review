@@ -53,7 +53,7 @@ router.post('/',
         // add to DB
         db.resumes.add({
           id: id,
-          uid: authorUsername,
+          author: authorUsername,
           filename: filename,
           date: date,
         }).then(() => {
