@@ -1,5 +1,5 @@
 mixin deleteButton(comment)
-  if canEdit(user.preferred_username, comment.author)
+  if canEdit(user.username, comment.author)
     a(data-parent=comment.id, onclick='deleteComment(event)', href='#', class='btn btn-sm btn-danger float-md-right')
       i(class='fas fa-trash-alt')
 

@@ -17,7 +17,7 @@ block content
                   span.badge.badge-primary.badge-pill.float-right #{moment(item.date + ' +0000').fromNow()} 
                   if !item.preview
                     a(href='#', onClick='previewResume(event)', data-id=item.id, class='btn btn-sm btn-secondary') Toggle outdated
-                  if canEdit(user.preferred_username, item.author)
+                  if canEdit(user.username, item.author)
                     a(data-parent=item.id, href="/resumes/delete/" + item.id, class='btn btn-sm btn-danger float-right')
                       i(class='fas fa-trash-alt')
                 div(id=item.id, class=item.preview ? '' : 'collapsed')
