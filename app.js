@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import passport from 'passport';
 import session from 'express-session';
 import { fileURLToPath } from 'url';
-import { Strategy as OIDCStrategy } from 'passport-openidconnect';
+import OpenIDConnectStrategy from 'passport-openidconnect';
 
 import config from './config.js';
 import index from './routes/index.js';
@@ -40,7 +40,7 @@ app.use(session({
   resave: true,
 }));
 
-passport.use(new OIDCStrategy({
+passport.use(new OpenIDConnectStrategy({
     issuer: 'https://sso.csh.rit.edu/auth/realms/csh',
     authorizationURL: 'https://sso.csh.rit.edu/auth/realms/csh/protocol/openid-connect/auth',
     tokenURL: 'https://sso.csh.rit.edu/auth/realms/csh/protocol/openid-connect/token',
@@ -49,7 +49,7 @@ passport.use(new OIDCStrategy({
     clientSecret: config.auth.client_secret,
     callbackURL: config.auth.callback_url,
   },
-  function(accessToken, refreshToken, profile, cb) {
+  function(issuer, profile, cb) {
     return cb(null, profile);
   }));
 
