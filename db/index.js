@@ -1,4 +1,3 @@
-import promise from 'bluebird';
 import pgPromise from 'pg-promise';
 
 import resumes from './repos/resumes.js';
@@ -11,7 +10,6 @@ const repos = {
 };
 
 const options = {
-    promiseLib: promise,
     extend: (obj, dc) => {
         obj.resumes = new repos.resumes(obj, pgp);
         obj.comments = new repos.comments(obj, pgp);
