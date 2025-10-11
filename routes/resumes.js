@@ -1,5 +1,5 @@
 import express from 'express';
-import hasha from 'hasha';
+import {hash} from 'hasha';
 import moment from 'moment';
 
 import config from '../config.js';
@@ -65,6 +65,7 @@ function deleteChildComments(id) {
 router.get('/view/user/:uid',
   (req, res, next) => {
     db.resumes.findByAuthor(req.params.uid).then(resumes => {
+      console.log(req.user)
       if (resumes) {
         Promise.all(resumes.map(resume => buildCommentThreads(resume.id)))
           .then(comments => {
@@ -76,7 +77,7 @@ router.get('/view/user/:uid',
                 (a, b) => new Date(b.date) - new Date(a.date)
               );
             data[0].preview = true; // preview only the most recent resume by default
-            res.render('viewMany', { data, user: req.user._json, canEdit, moment });
+            res.render('viewMany', { data, user: req.user, canEdit, moment });
           })
       }else{ // causes a 404 when unable to find the user
         res.status(404); 
@@ -89,7 +90,7 @@ router.get('/delete/:id',
   (req, res, next) => {
     db.resumes.find(req.params.id)
     .then(data => {
-      if (canEdit(req.user._json.preferred_username, data.author)) {
+      if (canEdit(req.user.username, data.author)) {
         deleteChildComments(req.params.id);
         db.resumes.delete(req.params.id)
         .then(() => {
