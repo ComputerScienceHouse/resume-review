@@ -1,5 +1,5 @@
 import express from 'express';
-import hasha from 'hasha';
+import {hash} from 'hasha';
 import nodemailer from 'nodemailer';
 import escape from 'escape-html';
 
@@ -82,7 +82,7 @@ function deleteChildComments(id) {
 
 router.post('/',
   (req, res, next) => {
-    const author = req.user._json.preferred_username;
+    const author = req.user.username;
     const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
     console.log(req.body);
     if (!req.body.parent_id || !req.body.body) {
@@ -91,7 +91,7 @@ router.post('/',
       return;
     }
     db.comments.add({
-      id: hasha(req.body.body + author + date, {algorithm: 'md5'}),
+      id: hash(req.body.body + author + date, {algorithm: 'md5'}),
       parent_id: req.body.parent_id,
       author,
       body: req.body.body,
@@ -112,7 +112,7 @@ router.post('/',
 
 router.delete('/',
   (req, res, next) => {
-    const user = req.user._json.preferred_username;
+    const user = req.user.username;
     const id = req.body.id;
     if (!id) {
       res.status(400);
@@ -124,7 +124,6 @@ router.delete('/',
           deleteChildComments(id);
           db.comments.delete(id)
             .then(result => {
-              console.log(result);
               if (result) {
                 res.status(200);
                 res.send('success');
