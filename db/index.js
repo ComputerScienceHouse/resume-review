@@ -21,7 +21,7 @@ const props = {
     database: config.db.name,
     user: config.db.username,
     password: config.db.password,
-    ssl: false,
+    ssl: true,
 };
 
 const pgp = pgPromise(options);
