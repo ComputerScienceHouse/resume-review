@@ -20,16 +20,16 @@ html
               a.nav-link(href='/upload') Upload
             if user
               li(class=mineActive ? "active nav-item" : "nav-item")
-                a.nav-link(href='/resumes/view/user/' + user.preferred_username) My Resumes
+                a.nav-link(href='/resumes/view/user/' + user.username) My Resumes
           if user
             ul.nav.navbar-nav.ml-auto
               li.nav-item.navbar-user.dropdown
                 a#user.nav-link.dropdown-toggle(data-toggle='dropdown', href='#')
-                  img(src='https://profiles.csh.rit.edu/image/' + user.preferred_username)
-                  | #{user.given_name + ' ' + user.family_name}
+                  img(src='https://profiles.csh.rit.edu/image/' + user.username)
+                  | #{user.name.givenName + ' ' + user.name.familyName}
                   span.caret
                 .dropdown-menu(aria-labelledby='user')
-                  a.dropdown-item(href='https://profiles.csh.rit.edu/user/' + user.preferred_username) Profile
+                  a.dropdown-item(href='https://profiles.csh.rit.edu/user/' + user.username) Profile
                   a.dropdown-item(href='https://github.com/ramzallan/resume-review/') Report an Issue
     if error
       .container
