@@ -5,13 +5,13 @@ import db from '../db/index.js';
 
 const router = express.Router();
 
-router.get('/',
-  (req, res, next) => {
-    db.resumes.newestByAuthor()
-      .then(data => {
-        res.render('index', { resumes: data, user: req.user._json, moment, homeActive: true });
-      })
-      .catch(error => console.log(error));
-  });
+router.get('/', async (req, res, next) => {
+  try {
+    const resumes = await db.resumes.newestByAuthor()
+    res.render('index', { resumes, user: req.user, moment, homeActive: true,});
+  } catch (e) {
+    res.status(500).render('index', { resumes: [], user: req.user, moment, homeActive: true, error: `Error encountered: ${e}` });
+  }
+});
 
 export default router;

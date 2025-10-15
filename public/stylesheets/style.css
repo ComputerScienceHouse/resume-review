@@ -84,6 +84,7 @@ small {
 
 .list-group {
   margin-bottom: 20px;
+  white-space: pre-wrap;
 }
 
 input[name=body] {
@@ -94,7 +95,7 @@ input[name=body] {
 
 .comment-input {
   width: 100%;
-  height: auto !important; /* blame bootstrap for this */
+  resize: vertical;
 }
 
 .card {

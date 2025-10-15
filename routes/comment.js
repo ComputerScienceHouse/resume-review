@@ -1,5 +1,5 @@
 import express from 'express';
-import hasha from 'hasha';
+import {hash} from 'hasha';
 import nodemailer from 'nodemailer';
 import escape from 'escape-html';
 
@@ -47,104 +47,98 @@ function sendEmail(owner, author, parent_id, body) {
   });
 }
 
-
-function notifyOwner(commenter, parent_id, body) {
-    const parent_resume = db.resumes.find(parent_id)
-      .then(data => {
-        if (data) { // top level comment, parent_id was a resume
-          if (data.author !== commenter) {
-            sendEmail(data.author, commenter, parent_id, body);
-          }
-        } else { // threaded comment, parent_id was a comment, find its resume
-          db.comments.find(parent_id).then(parent_comment => { // get parent comment
-            db.resumes.find(parent_comment.parent_id).then(parent_resume => { // get parent resume
-              if (parent_resume.author !== commenter) {
-                sendEmail(parent_resume.author, commenter, parent_resume.id, body);
-              }
-            });
-          });
-        }
-      })
-      .catch(err => {
-        console.log('Mail error:\n', err);
-      });
-}
-
-
-function deleteChildComments(id) {
-  db.comments.findByParent(id)
-    .then(comments => {
-      for (let comment of comments) {
-        db.comments.delete(comment.id);
+async function notifyOwner(commenter, parent_id, body) {
+  try {
+    const parent_resume = await db.resumes.find(parent_id)
+    if (parent_resume) { // top level comment, parent_id was a resume
+      if (parent_resume.author !== commenter) {
+        sendEmail(parent_resume.author, commenter, parent_id, body)
+        return
       }
-    })
-}
-
-router.post('/',
-  (req, res, next) => {
-    const author = req.user._json.preferred_username;
-    const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    console.log(req.body);
-    if (!req.body.parent_id || !req.body.body) {
-      res.status(400);
-      res.send('error');
+    }
+    
+    // threaded comment, parent_id was a comment, find its resume
+    const parent_comment = await db.comments.find(parent_id)
+    if (!parent_comment) {
+      console.warn(`Parent comment with id ${parent_id} not found.`);
       return;
     }
-    db.comments.add({
-      id: hasha(req.body.body + author + date, {algorithm: 'md5'}),
+
+    const resume = await db.resumes.find(parent_comment.parent_id)
+    if (!resume) {
+      console.warn(`Parent resume with id ${parent_id} not found.`);
+      return;
+    }
+
+    if (resume.author !== commenter) {
+      sendEmail(resume.author, commenter, resume.id, body);
+    }
+  } catch(e) { 
+    console.error(`Error while attemping to send email: \n${e}`)
+  }
+}
+
+async function deleteChildComments(id) {
+  try {
+    const comments = await db.comments.findByParent(id)
+    const deletions = comments.map(comment => db.comments.delete(comment.id))
+
+    await Promise.all(deletions) // paralel deletion 
+  } catch (e) {
+    console.error(`Error deleting comments: \n${e}`)
+  }
+}
+
+router.post('/', async (req, res, next) => {
+  const author = req.user.username;
+  const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+  if (!req.body.parent_id || !req.body.body) {
+    res.status(400).send('error');
+    return;
+  }
+
+  try {
+    const data = await db.comments.add({
+      id: await hash(req.body.body + author + date, {algorithm: 'md5'}),
       parent_id: req.body.parent_id,
       author,
       body: req.body.body,
       date,
     })
-    .then(data => {
-      res.status(200);
-      res.send('success');
-      notifyOwner(author, req.body.parent_id, escape(req.body.body)); // send email on successful comment
-    })
-    .catch(error => {
-      res.status(500);
-      console.log(error);
-      res.send('error');
-    });
-  }
-);
 
-router.delete('/',
-  (req, res, next) => {
-    const user = req.user._json.preferred_username;
+    res.status(200).send('success');
+    notifyOwner(author, req.body.parent_id, escape(req.body.body)); // send email on successful comment
+  } catch(e) {
+    console.error(`Error while writing comment to db: \n${e}`)
+    res.status(500).send(`Error while writing comment to db: \n${e}`);
+  }
+});
+
+router.delete('/', async (req, res, next) => {
+    const user = req.user.username;
     const id = req.body.id;
     if (!id) {
       res.status(400);
       res.send('Did not pass comment ID');
     }
-    db.comments.find(id)
-      .then(comment => {
-        if (user === comment.author || config.admins.includes(user)) {
-          deleteChildComments(id);
-          db.comments.delete(id)
-            .then(result => {
-              console.log(result);
-              if (result) {
-                res.status(200);
-                res.send('success');
-              }
-            })
-            .catch(error => {
-              res.status(500);
-              res.send('Could not delete comment');
-              console.log(error);
-            })
-        } else {
-          res.status(403);
-          res.send('Not permitted to delete comment');
+
+    try {
+      const comment = await db.comments.find(id)
+
+      if (user === comment.author || config.admins.includes(user)) {
+        deleteChildComments(id);
+        const result = await db.comments.delete(id)
+        if (result) {
+          res.status(200).send("success");
         }
-      })
-      .catch(error => {
-        res.status(500);
-        res.send('Could not delete comment');
-        console.log(error);
-      })
+      } else {
+        res.status(403).send('Not permitted to delete comment');  
+      }
+    } catch(e) {
+      console.error(`Error while deleting comment: \n${e}`)
+      res.status(500).send(`Error while deleting comment: \n${e}`)
+    }
   }
 );
 

@@ -17,7 +17,7 @@ block content
                   span.badge.badge-primary.badge-pill.float-right #{moment(item.date + ' +0000').fromNow()} 
                   if !item.preview
                     a(href='#', onClick='previewResume(event)', data-id=item.id, class='btn btn-sm btn-secondary') Toggle outdated
-                  if canEdit(user.preferred_username, item.author)
+                  if canEdit(user.username, item.author)
                     a(data-parent=item.id, href="/resumes/delete/" + item.id, class='btn btn-sm btn-danger float-right')
                       i(class='fas fa-trash-alt')
                 div(id=item.id, class=item.preview ? '' : 'collapsed')
@@ -32,7 +32,7 @@ block content
                     input(name='parent_id', type='text', value=item.id, readonly, hidden)
                     .form-row
                       .col-9.col-md-10
-                        input(class="comment-input" name='body', type='text', placeholder='New comment')
+                        textarea(class="comment-input" name='body', type='text', placeholder='New comment')
                       .col-3.col-md-2
                         input(type='button', value='Post', onclick="sendComment(event)", class='btn btn-primary')
             if item.preview && data.length > 1
