@@ -12,7 +12,7 @@
     "@hapi/hoek": "^11.0.7",
     "aws-sdk": "^2.1692.0",
     "bluebird": "^3.7.2",
-    "body-parser": "^2.2.0",
+    "body-parser": "^2.2.1",
     "cookie-parser": "~1.4.7",
     "debug": "~4.4.3",
     "escape-html": "^1.0.3",
