@@ -16,7 +16,7 @@
     "cookie-parser": "~1.4.7",
     "debug": "~4.4.3",
     "escape-html": "^1.0.3",
-    "express": "^5.1.0",
+    "express": "^5.2.0",
     "express-session": "^1.18.2",
     "hasha": "^7.0.0",
     "mime": "^4.1.0",
