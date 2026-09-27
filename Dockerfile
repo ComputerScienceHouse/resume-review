@@ -10,10 +10,12 @@ COPY package*.json ./
 
 RUN npm install
 
+RUN npm run build
+
 COPY . /opt/resume-review
 
 ENV TZ="America/New_York"
 
 USER 1001
 
-CMD ["node", "app.js"]
+CMD ["node", "dist/app.js"]
