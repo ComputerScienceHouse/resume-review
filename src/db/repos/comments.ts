@@ -30,7 +30,7 @@ class CommentsRepository {
             id: values.id,
             parent_id: values.parent_id,
             author: values.author,
-            body: values.body,
+            body: values.body.trim(),
             date: values.date,
         });
     }
