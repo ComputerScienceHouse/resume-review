@@ -22,7 +22,9 @@ const props = {
     database: config.db.name,
     user: config.db.username,
     password: config.db.password,
-    ssl: true,
+    ssl: config.disable_ssl == "true" ? {
+        rejectUnauthorized: false,
+    } : true,
 };
 
 const pgp = pgPromise(options);

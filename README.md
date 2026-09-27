@@ -22,6 +22,7 @@ Create `nodemon.json` with the following environment variables filled in:
 ```
 {
   "env": {
+    "DISABLE_SSL": "",
     "PORT": "",
     "DB_NAME": "",
     "DB_USERNAME": "",
@@ -45,6 +46,7 @@ Create `nodemon.json` with the following environment variables filled in:
 ```
 
 Note: For local development, be sure to set OIDC_CALLBACK_URL to exactly `http://localhost:8080/auth/callback` or `http://localhost:4200/auth/callback`.
+You should also disable SSL if developing on localhost, this can be done by setting DISABLE_SSL to exactly `true`.
 
 If you are deadset on using something else, you will need to reach out to a Computer Science House Root Type Person first.
 

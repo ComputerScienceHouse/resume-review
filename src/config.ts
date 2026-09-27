@@ -1,4 +1,5 @@
 const config: {
+    disable_ssl: string;
     port: string;
     db: {
         name: string;
@@ -26,6 +27,7 @@ const config: {
      };
     slackWebhookURL: string;
 } = {
+    disable_ssl: process.env.DISABLE_SSL || "",
     port: process.env.PORT || '4200',
 
     db: {
