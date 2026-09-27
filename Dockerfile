@@ -8,7 +8,7 @@ WORKDIR /opt/resume-review
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY . /opt/resume-review
 
