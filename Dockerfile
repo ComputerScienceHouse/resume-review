@@ -18,4 +18,4 @@ ENV TZ="America/New_York"
 
 USER 1001
 
-CMD ["node", "dist/app.js"]
+CMD ["npm", "start"]
