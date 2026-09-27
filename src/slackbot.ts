@@ -21,7 +21,7 @@ const job = schedule.scheduleJob('0 0 13 * * *', async function() {
 	await sendSlackMessage(authors);
 })
 
-async function sendSlackMessage(authors) {
+async function sendSlackMessage(authors: Author[]) {
 
 	if (authors.length == 0) { return }
 
@@ -45,8 +45,8 @@ async function sendSlackMessage(authors) {
 	}
 
 	try {
-		const response = await fetch(webhookURL, {
-			method: 'post',
+		await fetch(webhookURL, {
+			method: 'POST',
 			body: JSON.stringify(body),
 			headers: {'Content-Type': 'application/json'}
 		});
@@ -54,3 +54,7 @@ async function sendSlackMessage(authors) {
 }
 
 export default job;
+
+interface Author {
+    author: string;
+}

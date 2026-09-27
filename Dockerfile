@@ -8,12 +8,14 @@ WORKDIR /opt/resume-review
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY . /opt/resume-review
+
+RUN npm run build
 
 ENV TZ="America/New_York"
 
 USER 1001
 
-CMD ["node", "app.js"]
+CMD ["npm", "start"]

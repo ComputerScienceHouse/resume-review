@@ -1,12 +1,17 @@
+import type { IDatabase } from 'pg-promise';
+import type { Resume } from '../../types.js';
 import _sql from '../sql/index.js';
+import type pg from 'pg-promise/typescript/pg-subset.js';
+import type { Ext } from '../index.js';
 
 const sql = _sql.resumes;
 
 class ResumesRepository {
-    constructor(db, pgp) {
+    db: IDatabase<Ext, pg.IClient>;
+
+    constructor(db: IDatabase<Ext, pg.IClient>, _pgp?: unknown) {
         this.db = db;
-        this.pgp = pgp;
-    }
+       }
 
     create() {
         return this.db.none(sql.create);
@@ -20,7 +25,7 @@ class ResumesRepository {
         return this.db.none(sql.empty);
     }
 
-    add(values) {
+    add(values: Resume) {
         return this.db.one(sql.add, {
            id: values.id,
            author: values.author,
@@ -37,19 +42,19 @@ class ResumesRepository {
         return this.db.any(sql.newestByAuthor);
     }
 
-    find(id) {
+    find(id: string) {
         return this.db.oneOrNone(sql.find, {
             id: id,
         });
     }
 
-    findByAuthor(author) {
+    findByAuthor(author: string) {
         return this.db.any(sql.findByAuthor, {
             author,
         });
     }
 
-    delete(id) {
+    delete(id: string) {
         return this.db.none(sql.delete, {
             id: id,
         });
