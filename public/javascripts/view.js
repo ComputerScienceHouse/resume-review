@@ -51,6 +51,10 @@ const sendComment = event => {
       if (response.code > 399) {
         alert('Could not post comment.');
       } else {
+        document.querySelectorAll("textarea[class=comment-input]").forEach(elem => {
+          elem.value = "";
+        });
+
         window.location.reload();
       }
     })

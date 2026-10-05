@@ -1,5 +1,8 @@
 import express from 'express';
 import moment from 'moment';
+import { marked } from 'marked';
+import { JSDOM } from 'jsdom';
+import DOMPurify from 'dompurify';
 
 import config from '../config.js';
 import db from '../db/index.js';
@@ -22,7 +25,7 @@ function getChildComments(parent_id: string) {
     return db.comments.findByParent(parent_id);
 }
 
-async function buildCommentThreads(resume_id: string) {
+async function buildCommentThreads(resume_id: string): Promise<Comment[]> {
     try {
         const comments = await db.comments.findByParent(resume_id)
         if (!comments) return [];
@@ -73,11 +76,23 @@ router.get('/view/user/:uid', async (req, res, _next) => {
             res.status(404).render('viewMany', { data: [], user: req.user, canEdit, moment, error: "User not found" })
             return
         }
+
+        const { window } = new JSDOM('');
+        const purify = DOMPurify(window);
+
+        async function renderComments(comment: Comment): Promise<Comment> {
+            return {
+                ...comment,
+                body: purify.sanitize(await marked.parse(comment.body)),
+                children: comment.children ? await Promise.all(comment.children.map(renderComments)) : []
+            };
+        }
+
         const comments = await Promise.all(resumes.map((resume: Resume) => buildCommentThreads(resume.id)))
-        const data = resumes
+        const data = (await Promise.all(resumes
             .map(
-                (resume: Resume, index: number) => Object.assign(resume, { url: getUrl(resume.id), comments: comments[index] })
-            )
+                async (resume: Resume, index: number) => Object.assign(resume, { url: getUrl(resume.id), comments: await Promise.all(comments[index].map(renderComments)) })
+            )))
             .sort(
                 (a: Resume, b: Resume) => new Date(b.date).valueOf() - new Date(a.date).valueOf()
             );
