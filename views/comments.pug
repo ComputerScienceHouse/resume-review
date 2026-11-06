@@ -9,7 +9,8 @@ mixin displayComment(comment, isResponse)
       img(src='https://profiles.csh.rit.edu/image/' + comment.author, class='profile')
       strong #{comment.author}
       | : 
-      | #{comment.body}
+      div.comment-body
+        != comment.body
       div.d-md-inline
         span.badge.badge-secondary.badge-pill.float-md-right #{moment(comment.date + ' +0000').fromNow()}
         +deleteButton(comment)
@@ -18,7 +19,8 @@ mixin displayComment(comment, isResponse)
       img(src='https://profiles.csh.rit.edu/image/' + comment.author, class='profile')
       strong #{comment.author}
       | : 
-      | #{comment.body}
+      div.comment-body
+        != comment.body
       div.d-md-inline
         span.badge.badge-secondary.badge-pill.float-md-right #{moment(comment.date + ' +0000').fromNow()}
         a(data-parent=comment.id, onclick='reply(event)', href='#', class='btn btn-sm btn-info float-md-right')
